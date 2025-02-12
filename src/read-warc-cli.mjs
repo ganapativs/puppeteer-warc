@@ -15,7 +15,13 @@ if (!warcPath) {
   process.exit(1);
 }
 
-// Run the function
+// Read the WARC file and handle the results
 readWARC(warcPath)
-  .then((records) => console.log(records))
-  .catch((error) => console.error("Fatal error:", error));
+  .then((records) => {
+    // Log each record to the console
+    console.log(records);
+  })
+  .catch((error) => {
+    // Log any errors encountered during the read process
+    console.error("Fatal error:", error);
+  });

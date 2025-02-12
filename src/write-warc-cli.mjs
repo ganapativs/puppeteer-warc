@@ -8,18 +8,18 @@
 
 import { writeWARC } from "./write-warc.mjs";
 
-// Check if file path is provided as command line argument
+// Check if website URL is provided as command line argument
 const website = process.argv[2];
 if (!website) {
-  console.error("Please provide the path to a WARC file as an argument.");
-  console.error("Usage: node script.js <path-to-warc-file>");
+  console.error("Please provide the website URL as an argument.");
+  console.error("Usage: node script.js <website-url>");
   process.exit(1);
 }
 
 // Sanitize the website URL by removing 'http://', 'https://', and non-alphabetic characters
 const sanitizedFilename = website
-  .replace(/^https?:\/\//, "")
-  .replaceAll(/[^a-zA-Z]/g, "");
+  .replace(/^https?:\/\//, "") // Remove protocol
+  .replaceAll(/[^a-zA-Z]/g, ""); // Remove non-alphabetic characters
 
 // Use the sanitized filename for the WARC file
 writeWARC(website, `${sanitizedFilename}.warc.gz`, {

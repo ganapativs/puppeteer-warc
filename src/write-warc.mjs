@@ -5,15 +5,17 @@ import { pipeline } from "node:stream/promises";
 import { WARCRecord, WARCSerializer } from "warcio";
 
 export async function writeWARC(url, warcPath, { screenshotName }) {
+  // Launch a new browser instance
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  // Store all requests and responses
+  // Map to store request and response data
   const resourceData = new Map();
 
-  // Intercept all requests
+  // Enable request interception
   await page.setRequestInterception(true);
 
+  // Handle requests
   page.on("request", async (request) => {
     const { id } = request;
     const requestData = {
@@ -26,14 +28,16 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
       timestamp: new Date().toISOString(),
     };
 
+    // Initialize entry for the URL if it doesn't exist
     if (!resourceData.has(request.url())) {
       resourceData.set(request.url(), {});
     }
+    // Store request data
     resourceData.get(request.url())[id] = { request: requestData };
     request.continue();
   });
 
-  // Capture all responses
+  // Handle responses
   page.on("response", async (response) => {
     try {
       const { id } = response.request();
@@ -43,12 +47,14 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
         status: response.status(),
         headers: response.headers(),
         timestamp: new Date().toISOString(),
-        buffer: await response.buffer().catch(() => null), // Some responses might not have a buffer
+        buffer: await response.buffer().catch(() => null), // Handle potential buffer absence
       };
 
+      // Initialize entry for the URL if it doesn't exist
       if (!resourceData.has(url)) {
         resourceData.set(url, {});
       }
+      // Store response data
       const entries = resourceData.get(url);
       const resourceEntry = entries[id] || {};
       resourceEntry.response = responseData;
@@ -57,18 +63,19 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
     }
   });
 
-  // Navigate to the page
+  // Navigate to the specified URL
   await page.goto(url, { waitUntil: "networkidle0" });
 
+  // Capture a screenshot
   await page.screenshot({ path: `${screenshotName}.png` });
 
-  // Get the final rendered HTML
+  // Get the final rendered HTML content
   const renderedHTML = await page.content();
 
-  // Create WARC file stream
+  // Create a writable stream for the WARC file
   const warcOutputStream = fs.createWriteStream(warcPath);
 
-  // Create warcinfo record
+  // Create and write a warcinfo record
   const warcinfo = await WARCRecord.createWARCInfo(
     { filename: warcPath, warcVersion: "WARC/1.1" },
     {
@@ -77,17 +84,16 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
     }
   );
 
-  // Write warcinfo record
   const warcinfoSerializer = new WARCSerializer(warcinfo, { gzip: true });
   await pipeline(Readable.from(warcinfoSerializer), warcOutputStream, {
     end: false,
   });
 
-  // Function to write a request/response pair
+  // Function to write request/response pairs to the WARC file
   async function writeRequestResponse(url, data) {
     if (!data.response?.buffer) return;
 
-    // Create request record
+    // Create and write a request record
     const requestRecord = await WARCRecord.create(
       {
         type: "request",
@@ -106,13 +112,12 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
       })()
     );
 
-    // Write request record
     const requestSerializer = new WARCSerializer(requestRecord, { gzip: true });
     await pipeline(Readable.from(requestSerializer), warcOutputStream, {
       end: false,
     });
 
-    // Create response record
+    // Create and write a response record
     const responseRecord = await WARCRecord.create(
       {
         type: "response",
@@ -130,7 +135,6 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
       })()
     );
 
-    // Write response record
     const responseSerializer = new WARCSerializer(responseRecord, {
       gzip: true,
     });
@@ -169,9 +173,9 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
     }
   }
 
-  // Close the WARC file
+  // Close the WARC file stream
   warcOutputStream.end();
 
-  // Close the browser
+  // Close the browser instance
   await browser.close();
 }

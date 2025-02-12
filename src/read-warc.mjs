@@ -1,6 +1,7 @@
 import { WARCParser } from "warcio";
 import fs from "node:fs";
 
+// List of MIME types considered as text for content extraction
 const textMimeTypes = [
   "application/javascript",
   "application/ecmascript",
@@ -27,12 +28,19 @@ const textMimeTypes = [
   "application/x-ndjson",
 ];
 
+/**
+ * Reads a WARC file and extracts records into a structured format.
+ * @param {string} warcPath - The path to the WARC file.
+ * @returns {Promise<{recordCount: number, recordsMap: Map}>} - A promise that resolves with the record count and a map of records.
+ */
 export async function readWARC(warcPath) {
+  // Create a readable stream from the WARC file
   const nodeStream = fs.createReadStream(warcPath);
   const parser = new WARCParser(nodeStream);
   const recordsMap = new Map();
   let recordCount = 0;
 
+  // Iterate over each record in the WARC file
   for await (const record of parser) {
     recordCount++;
     const resourceDetails = {};
@@ -61,13 +69,14 @@ export async function readWARC(warcPath) {
       resourceDetails.contentType = httpContentType || contentType;
       resourceDetails.contentSize = content.length;
 
-      // Add content for response records
+      // Convert content to string if it's a recognized text MIME type
       if (textMimeTypes.some((type) => httpContentType.includes(type))) {
         resourceDetails.content = Buffer.from(content).toString();
       } else {
         resourceDetails.content = Buffer.from(content);
       }
     } catch (error) {
+      // Capture any errors encountered during content extraction
       resourceDetails.contentError = error.message;
     }
 
@@ -75,6 +84,7 @@ export async function readWARC(warcPath) {
     recordsMap.set(`Record #${recordCount}`, resourceDetails);
   }
 
+  // Return the total record count and the map of records
   return {
     recordCount,
     recordsMap,
