@@ -15,13 +15,13 @@ npm install
 ### Write WARC
 
 ```bash
-node write-warc.js <website-url>
+node write-warc.mjs <website-url>
 ```
 
 Example:
 
 ```bash
-node write-warc.js https://example.com
+node write-warc.mjs https://example.com
 ```
 
 The script will render and create a WARC file of the given website.
@@ -31,13 +31,13 @@ The script will also create a screenshot of the web page, which can be useful fo
 ### Read WARC
 
 ```bash
-node read-warc.js <path-to-warc-file>
+node read-warc.mjs <path-to-warc-file>
 ```
 
 Example:
 
 ```bash
-node read-warc.js example.warc.gz
+node read-warc.mjs example.warc.gz
 ```
 
 The script will read the contents of the given WARC file and print the records.
@@ -48,4 +48,4 @@ https://replayweb.page/
 
 ### License
 
-MIT License
+MIT License - Copyright (c) 2025 Ganapati V S
