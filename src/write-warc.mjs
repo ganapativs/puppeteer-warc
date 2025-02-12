@@ -1,16 +1,33 @@
-import puppeteer from "puppeteer";
 import fs from "node:fs";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
+import { executablePath } from "puppeteer";
+import { addExtra } from "puppeteer-extra";
+import rebrowserPuppeteer from "rebrowser-puppeteer-core";
 import { WARCRecord, WARCSerializer } from "warcio";
+
+const puppeteer = addExtra(rebrowserPuppeteer);
 
 export async function writeWARC(url, warcPath, { screenshotName }) {
   let browser;
 
   try {
     // Launch a new browser instance
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({
+      // headless: false,
+      // devtools: true,
+      executablePath: executablePath(),
+      defaultViewport: {
+        width: 1440,
+        height: 900,
+      },
+    });
     const page = await browser.newPage();
+
+    // Set user agent
+    await page.setUserAgent(
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+    );
 
     // Map to store request and response data
     const resourceData = new Map();
@@ -26,7 +43,8 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
         method: request.method(),
         headers: request.headers(),
         postData: request.hasPostData()
-          ? await request.fetchPostData()
+          ? // For form data, use the postData property, otherwise use fetchPostData
+            request.postData() || (await request.fetchPostData())
           : undefined,
         timestamp: new Date().toISOString(),
       };
@@ -67,7 +85,7 @@ export async function writeWARC(url, warcPath, { screenshotName }) {
     });
 
     // Navigate to the specified URL
-    await page.goto(url, { waitUntil: "networkidle0" });
+    await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
 
     // Capture a screenshot
     await page.screenshot({ path: `${screenshotName}.png` });

@@ -1,5 +1,5 @@
-import { WARCParser } from "warcio";
 import fs from "node:fs";
+import { WARCParser } from "warcio";
 
 // List of MIME types considered as text for content extraction
 const textMimeTypes = [
