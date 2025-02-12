@@ -3,77 +3,87 @@ import { addExtra } from "puppeteer-extra";
 import rebrowserPuppeteer from "rebrowser-puppeteer-core";
 import { closeWARCOutputStream, getWARCOutputStream, writeRequestResponse, writeWARCInfo } from "./write-utils.mjs";
 
+// Enhance Puppeteer with additional plugins
 const puppeteer = addExtra(rebrowserPuppeteer);
 
+/**
+ * Writes a WARC (Web ARChive) file for a given URL.
+ * This function captures the network requests and responses, along with a screenshot and the rendered HTML.
+ *
+ * @param {string} url - The URL of the web page to archive.
+ * @param {string} WARCPath - The file path where the WARC file will be saved.
+ * @param {Object} options - Additional options for the WARC creation.
+ * @param {string} options.screenshotName - The name of the screenshot file to be saved.
+ */
 export async function writeWARC(url, WARCPath, { screenshotName }) {
-  let browser;
-  let WARCOutputStream;
+  let browser; // Variable to hold the browser instance
+  let WARCOutputStream; // Variable to hold the WARC output stream
 
   try {
-    // Launch a new browser instance
+    // Launch a new browser instance with specified options
     browser = await puppeteer.launch({
-      // headless: false,
-      // devtools: true,
-      executablePath: executablePath(),
+      headless: false, // Run in headful mode to see the browser window
+      executablePath: executablePath(), // Path to the Chrome/Chromium executable
       defaultViewport: {
-        width: 1440,
-        height: 900,
+        width: 1440, // Set the default width of the browser window
+        height: 900, // Set the default height of the browser window
       },
     });
+
+    // Open a new page in the browser
     const page = await browser.newPage();
 
-    // Set user agent
+    // Set a custom user agent to mimic a real browser
     await page.setUserAgent(
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
     );
 
-    // Map to store request and response data
+    // Map to store request and response data for each resource
     const resourceData = new Map();
 
-    // Enable request interception
+    // Enable request interception to capture request details
     await page.setRequestInterception(true);
 
-    // Handle requests
+    // Event listener for handling requests
     page.on("request", async (request) => {
-      const { id } = request;
+      const { id } = request; // Unique identifier for the request
       const requestData = {
         id,
-        method: request.method(),
-        headers: request.headers(),
+        method: request.method(), // HTTP method (GET, POST, etc.)
+        headers: request.headers(), // Request headers
         postData: request.hasPostData()
-          ? // For form data, use the postData property, otherwise use fetchPostData
-            request.postData() || (await request.fetchPostData())
+          ? request.postData() || (await request.fetchPostData()) // Capture post data if available
           : undefined,
-        timestamp: new Date().toISOString(),
+        timestamp: new Date().toISOString(), // Timestamp of the request
       };
 
       // Initialize entry for the URL if it doesn't exist
       if (!resourceData.has(request.url())) {
         resourceData.set(request.url(), {});
       }
-      // Store request data
+      // Store request data in the map
       resourceData.get(request.url())[id] = { request: requestData };
-      request.continue();
+      request.continue(); // Continue the request
     });
 
-    // Handle responses
+    // Event listener for handling responses
     page.on("response", async (response) => {
       try {
-        const { id } = response.request();
-        const url = response.url();
+        const { id } = response.request(); // Get the request ID
+        const url = response.url(); // Get the response URL
         const responseData = {
           id,
-          status: response.status(),
-          headers: response.headers(),
-          timestamp: new Date().toISOString(),
-          buffer: await response.buffer().catch(() => null), // Handle potential buffer absence
+          status: response.status(), // HTTP status code
+          headers: response.headers(), // Response headers
+          timestamp: new Date().toISOString(), // Timestamp of the response
+          buffer: await response.buffer().catch(() => null), // Capture response body
         };
 
         // Initialize entry for the URL if it doesn't exist
         if (!resourceData.has(url)) {
           resourceData.set(url, {});
         }
-        // Store response data
+        // Store response data in the map
         const entries = resourceData.get(url);
         const resourceEntry = entries[id] || {};
         resourceEntry.response = responseData;
@@ -82,13 +92,13 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
       }
     });
 
-    // Navigate to the specified URL
+    // Navigate to the specified URL and wait for the network to be idle
     await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
 
-    // Capture a screenshot
+    // Capture a screenshot of the page
     await page.screenshot({ path: `${screenshotName}.png` });
 
-    // Get the final rendered HTML content
+    // Get the final rendered HTML content of the page
     const renderedHTML = await page.content();
 
     /**
@@ -100,10 +110,10 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
     // Create a writable stream for the WARC file
     WARCOutputStream = getWARCOutputStream(WARCPath);
 
-    // Create and write a warcinfo record
+    // Create and write a warcinfo record to the WARC file
     await writeWARCInfo(WARCOutputStream, WARCPath);
 
-    // Write the main page response with rendered HTML
+    // Write the main page response with rendered HTML to the WARC file
     await writeRequestResponse(WARCOutputStream, `${url}#rendered-html`, {
       request: {
         id: "rendered-html",
@@ -124,7 +134,7 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
       },
     });
 
-    // Write all other resources
+    // Write all other resources (requests and responses) to the WARC file
     for (const [resourceUrl, entries] of resourceData.entries()) {
       for (const [id, data] of Object.entries(entries)) {
         if (resourceUrl !== url) {
@@ -146,15 +156,15 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
     await browser.close();
   } catch (error) {
     console.error("Error during WARC creation:", error);
-    throw error;
+    throw error; // Rethrow the error after logging
   } finally {
     if (WARCOutputStream) {
-      // Close the WARC file stream
+      // Ensure the WARC file stream is closed
       closeWARCOutputStream(WARCOutputStream);
     }
 
     if (browser) {
-      // Close the browser instance
+      // Ensure the browser instance is closed
       await browser.close();
     }
   }

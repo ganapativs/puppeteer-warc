@@ -8,14 +8,14 @@ This project demonstrates how to use Puppeteer to render a web page and create a
 
 ## Installation
 
-1. Clone the repository:
+1. **Clone the repository**: This step involves downloading the project files to your local machine.
 
    ```bash
    git clone https://github.com/ganapativs/puppeteer-warc.git
    cd puppeteer-warc
    ```
 
-2. Install the necessary dependencies:
+2. **Install the necessary dependencies**: This command will install all the required Node.js packages specified in the `package.json` file.
 
    ```bash
    npm install
@@ -25,39 +25,39 @@ This project demonstrates how to use Puppeteer to render a web page and create a
 
 ### Writing a WARC File
 
-To create a WARC file from a website, use the `src/write-warc-cli.mjs` script:
+To create a WARC file from a website, use the `src/write-warc-cli.mjs` script. This script will render the specified website and create a WARC file containing the page and its resources. It will also generate a screenshot of the web page, which can be useful for debugging.
 
-```bash
-node src/write-warc-cli.mjs <website-url>
-```
-
-- **Example**:
+- **Command**:
 
   ```bash
-  node src/write-warc-cli.mjs https://example.com
+  node src/write-warc-cli.mjs <website-url>
   ```
 
-This script will render the specified website and create a WARC file containing the page and its resources. It will also generate a screenshot of the web page, which can be useful for debugging.
+  - **Example**: To create a WARC file for `https://example.com`, run:
+
+    ```bash
+    node src/write-warc-cli.mjs https://example.com
+    ```
 
 ### Reading a WARC File
 
-To read and print the contents of a WARC file, use the `src/read-warc-cli.mjs` script:
+To read and print the contents of a WARC file, use the `src/read-warc-cli.mjs` script. This script will output the records contained in the specified WARC file.
 
-```bash
-node src/read-warc-cli.mjs <path-to-warc-file>
-```
-
-- **Example**:
+- **Command**:
 
   ```bash
-  node src/read-warc-cli.mjs examplecom.warc.gz
+  node src/read-warc-cli.mjs <path-to-warc-file>
   ```
 
-This script will output the records contained in the specified WARC file.
+  - **Example**: To read the contents of `examplecom.warc.gz`, run:
+
+    ```bash
+    node src/read-warc-cli.mjs examplecom.warc.gz
+    ```
 
 ### Previewing WARC Files
 
-You can preview WARC files using [ReplayWeb.page](https://replayweb.page/), a web-based tool for viewing archived web content.
+You can preview WARC files using [ReplayWeb.page](https://replayweb.page/), a web-based tool for viewing archived web content. This tool allows you to interact with the archived pages as if you were browsing them live.
 
 ## License
 
