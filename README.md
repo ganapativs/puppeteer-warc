@@ -1,51 +1,64 @@
 # Puppeteer WARC
 
-Demonstration of how to use Puppeteer to render a web page, and then create a [WARC](https://iipc.github.io/warc-specifications/specifications/warc-format/warc-1.1/) file of rendered page and it's resources. It can be used to archive web pages for long-term storage or for offline browsing.
+This project demonstrates how to use Puppeteer to render a web page and create a [WARC](https://iipc.github.io/warc-specifications/specifications/warc-format/warc-1.1/) file of the rendered page and its resources. This can be useful for archiving web pages for long-term storage or offline browsing.
+
+## Requirements
+
+- **Node.js**: Ensure you have Node.js installed (version 22 or higher is recommended). You can download it from [nodejs.org](https://nodejs.org/).
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   cd puppeteer-warc
+   ```
+
+2. Install the necessary dependencies:
+
+   ```bash
+   npm install
+   ```
 
 ## Usage
 
-1. Install dependencies:
+### Writing a WARC File
+
+To create a WARC file from a website, use the `write-warc.js` script:
 
 ```bash
-npm install
+node write-warc.js <website-url>
 ```
 
-2. Run the script:
+- **Example**:
 
-### Write WARC
+  ```bash
+  node write-warc.js https://example.com
+  ```
+
+This script will render the specified website and create a WARC file containing the page and its resources. It will also generate a screenshot of the web page, which can be useful for debugging.
+
+### Reading a WARC File
+
+To read and print the contents of a WARC file, use the `read-warc.js` script:
 
 ```bash
-node write-warc.mjs <website-url>
+node read-warc.js <path-to-warc-file>
 ```
 
-Example:
+- **Example**:
 
-```bash
-node write-warc.mjs https://example.com
-```
+  ```bash
+  node read-warc.js example.warc.gz
+  ```
 
-The script will render and create a WARC file of the given website.
+This script will output the records contained in the specified WARC file.
 
-The script will also create a screenshot of the web page, which can be useful for debugging.
+### Previewing WARC Files
 
-### Read WARC
+You can preview WARC files using [ReplayWeb.page](https://replayweb.page/), a web-based tool for viewing archived web content.
 
-```bash
-node read-warc.mjs <path-to-warc-file>
-```
+## License
 
-Example:
-
-```bash
-node read-warc.mjs example.warc.gz
-```
-
-The script will read the contents of the given WARC file and print the records.
-
-### Preview WARC file
-
-https://replayweb.page/
-
-### License
-
-MIT License - Copyright (c) 2025 Ganapati V S
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
