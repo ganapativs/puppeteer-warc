@@ -1,28 +1,10 @@
-/**
- * This script uses Puppeteer to capture a web page and its resources, and then creates a WARC file.
- * It can be used to archive web pages for long-term storage or for offline browsing.
- *
- * Usage: node write-warc.js <website-url>
- * Example: node write-warc.js https://example.com
- */
 import puppeteer from "puppeteer";
 import fs from "node:fs";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { WARCRecord, WARCSerializer } from "warcio";
 
-// Check if file path is provided as command line argument
-const website = process.argv[2];
-if (!website) {
-  console.error("Please provide the path to a WARC file as an argument.");
-  console.error("Usage: node script.js <path-to-warc-file>");
-  process.exit(1);
-}
-
-// Sanitize the website URL by removing 'http://', 'https://', and non-alphabetic characters
-const sanitizedFilename = website.replace(/^https?:\/\//, '').replaceAll(/[^a-zA-Z]/g, "");
-
-async function archiveWebPage(url, outputPath) {
+export async function archiveWebPage(url, outputPath, screenshotFileName) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -78,7 +60,7 @@ async function archiveWebPage(url, outputPath) {
   // Navigate to the page
   await page.goto(url, { waitUntil: "networkidle0" });
 
-  await page.screenshot({ path: `${sanitizedFilename}.png` });
+  await page.screenshot({ path: `${screenshotFileName}.png` });
 
   // Get the final rendered HTML
   const renderedHTML = await page.content();
@@ -193,8 +175,3 @@ async function archiveWebPage(url, outputPath) {
   // Close the browser
   await browser.close();
 }
-
-// Use the sanitized filename for the WARC file
-archiveWebPage(website, `${sanitizedFilename}.warc.gz`)
-  .then(() => console.log("Archive complete"))
-  .catch(console.error);

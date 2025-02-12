@@ -25,32 +25,32 @@ This project demonstrates how to use Puppeteer to render a web page and create a
 
 ### Writing a WARC File
 
-To create a WARC file from a website, use the `write-warc.js` script:
+To create a WARC file from a website, use the `write-warc-cli.mjs` script:
 
 ```bash
-node write-warc.js <website-url>
+node write-warc-cli.mjs <website-url>
 ```
 
 - **Example**:
 
   ```bash
-  node write-warc.js https://example.com
+  node write-warc-cli.mjs https://example.com
   ```
 
 This script will render the specified website and create a WARC file containing the page and its resources. It will also generate a screenshot of the web page, which can be useful for debugging.
 
 ### Reading a WARC File
 
-To read and print the contents of a WARC file, use the `read-warc.js` script:
+To read and print the contents of a WARC file, use the `read-warc-cli.mjs` script:
 
 ```bash
-node read-warc.js <path-to-warc-file>
+node read-warc-cli.mjs <path-to-warc-file>
 ```
 
 - **Example**:
 
   ```bash
-  node read-warc.js example.warc.gz
+  node read-warc-cli.mjs examplecom.warc.gz
   ```
 
 This script will output the records contained in the specified WARC file.
