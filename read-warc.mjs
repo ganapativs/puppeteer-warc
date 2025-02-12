@@ -42,73 +42,63 @@ const textMimeTypes = [
   "application/x-ndjson",
 ];
 
-async function printWARCRecords(warcPath) {
-  try {
-    const nodeStream = fs.createReadStream(warcPath);
-    const parser = new WARCParser(nodeStream);
-    let recordCount = 0;
+async function readWARCRecords(warcPath) {
+  const nodeStream = fs.createReadStream(warcPath);
+  const parser = new WARCParser(nodeStream);
+  const recordsMap = new Map();
+  let recordCount = 0;
 
-    for await (const record of parser) {
-      recordCount++;
-      console.log("=".repeat(80));
-      console.log("\n");
-      console.log(`Record #${recordCount}`);
-      console.log("=".repeat(80));
+  for await (const record of parser) {
+    recordCount++;
+    const resourceDetails = {};
 
-      // Print WARC headers
-      console.log("\nWARC Headers:");
-      console.log("-".repeat(20));
-      for (const [key, value] of record.warcHeaders.headers) {
-        console.log(`${key}: ${value}`);
-      }
+    // Collect WARC headers
+    resourceDetails.warcHeaders = {};
+    for (const [key, value] of record.warcHeaders.headers) {
+      resourceDetails.warcHeaders[key] = value;
+    }
 
-      // Print HTTP headers if they exist
-      if (record.httpHeaders) {
-        console.log("\nHTTP Headers:");
-        console.log("-".repeat(20));
-        for (const [key, value] of record.httpHeaders.headers) {
-          console.log(`${key}: ${value}`);
-        }
-      }
-
-      // Print content summary
-      console.log("\nContent Summary:");
-      console.log("-".repeat(20));
-
-      try {
-        // For text content, print first 500 characters
-        const contentType = record.warcHeader("Content-Type") || "";
-        const httpContentType =
-          record.httpHeaders?.headers.get("Content-Type") || "";
-
-        // For binary content, just show the size
-        const content = await record.readFully(true);
-        console.log(
-          `Binary content(content-type: ${
-            httpContentType || contentType
-          }) of size: ${content.length} bytes`
-        );
-        if (textMimeTypes.some((type) => httpContentType.includes(type))) {
-          console.log("Content is:");
-          console.log("-".repeat(20));
-          console.log(new Buffer.from(content).toString());
-        } else {
-          console.log("Non text content.");
-        }
-      } catch (error) {
-        console.log("Error reading content:", error.message);
+    // Collect HTTP headers if they exist
+    if (record.httpHeaders) {
+      resourceDetails.httpHeaders = {};
+      for (const [key, value] of record.httpHeaders.headers) {
+        resourceDetails.httpHeaders[key] = value;
       }
     }
 
-    console.log("=".repeat(80));
-    console.log("\n");
-    console.log(`Total records processed: ${recordCount}`);
-  } catch (error) {
-    console.error("Error processing WARC file:", error);
+    // Collect content details
+    try {
+      const contentType = record.warcHeader("Content-Type") || "";
+      const httpContentType =
+        record.httpHeaders?.headers.get("Content-Type") || "";
+      const content = await record.readFully(true);
+
+      resourceDetails.contentType = httpContentType || contentType;
+      resourceDetails.contentSize = content.length;
+
+      // Add content for response records
+      if (resourceDetails.warcHeaders["warc-type"] === "response") {
+        if (textMimeTypes.some((type) => httpContentType.includes(type))) {
+          resourceDetails.content = Buffer.from(content).toString();
+        } else {
+          resourceDetails.content = Buffer.from(content);
+        }
+      }
+    } catch (error) {
+      resourceDetails.contentError = error.message;
+    }
+
+    // Add resource details to the map
+    recordsMap.set(`Record #${recordCount}`, resourceDetails);
   }
+
+  return {
+    recordCount,
+    recordsMap,
+  };
 }
 
 // Run the function
-printWARCRecords(warcPath)
-  .then(() => console.log("Finished processing WARC file"))
+readWARCRecords(warcPath)
+  .then((records) => console.log(records))
   .catch((error) => console.error("Fatal error:", error));
