@@ -22,7 +22,7 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
   try {
     // Launch a new browser instance with specified options
     browser = await puppeteer.launch({
-      headless: false, // Run in headful mode to see the browser window
+      headless: true, // Run in headful mode to see the browser window
       executablePath: executablePath(), // Path to the Chrome/Chromium executable
       defaultViewport: {
         width: 1440, // Set the default width of the browser window
