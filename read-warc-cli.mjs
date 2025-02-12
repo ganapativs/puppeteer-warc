@@ -5,7 +5,7 @@
  * Example: node read-warc.js example.warc.gz
  */
 
-import { readWARCRecords } from "./read-warc.mjs";
+import { readWARC } from "./read-warc.mjs";
 
 // Check if file path is provided as command line argument
 const warcPath = process.argv[2];
@@ -16,6 +16,6 @@ if (!warcPath) {
 }
 
 // Run the function
-readWARCRecords(warcPath)
+readWARC(warcPath)
   .then((records) => console.log(records))
   .catch((error) => console.error("Fatal error:", error));

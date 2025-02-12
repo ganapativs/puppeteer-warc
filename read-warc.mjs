@@ -27,7 +27,7 @@ const textMimeTypes = [
   "application/x-ndjson",
 ];
 
-export async function readWARCRecords(warcPath) {
+export async function readWARC(warcPath) {
   const nodeStream = fs.createReadStream(warcPath);
   const parser = new WARCParser(nodeStream);
   const recordsMap = new Map();

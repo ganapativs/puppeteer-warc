@@ -6,7 +6,7 @@
  * Example: node write-warc.js https://example.com
  */
 
-import { archiveWebPage } from "./write-warc.mjs";
+import { writeWARC } from "./write-warc.mjs";
 
 // Check if file path is provided as command line argument
 const website = process.argv[2];
@@ -17,9 +17,13 @@ if (!website) {
 }
 
 // Sanitize the website URL by removing 'http://', 'https://', and non-alphabetic characters
-const sanitizedFilename = website.replace(/^https?:\/\//, '').replaceAll(/[^a-zA-Z]/g, "");
+const sanitizedFilename = website
+  .replace(/^https?:\/\//, "")
+  .replaceAll(/[^a-zA-Z]/g, "");
 
 // Use the sanitized filename for the WARC file
-archiveWebPage(website, `${sanitizedFilename}.warc.gz`, sanitizedFilename)
+writeWARC(website, `${sanitizedFilename}.warc.gz`, {
+  screenshotName: sanitizedFilename,
+})
   .then(() => console.log("Archive complete"))
   .catch(console.error);

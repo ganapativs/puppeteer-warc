@@ -4,7 +4,7 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { WARCRecord, WARCSerializer } from "warcio";
 
-export async function archiveWebPage(url, outputPath, screenshotFileName) {
+export async function writeWARC(url, warcPath, { screenshotName }) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -60,17 +60,17 @@ export async function archiveWebPage(url, outputPath, screenshotFileName) {
   // Navigate to the page
   await page.goto(url, { waitUntil: "networkidle0" });
 
-  await page.screenshot({ path: `${screenshotFileName}.png` });
+  await page.screenshot({ path: `${screenshotName}.png` });
 
   // Get the final rendered HTML
   const renderedHTML = await page.content();
 
   // Create WARC file stream
-  const warcOutputStream = fs.createWriteStream(outputPath);
+  const warcOutputStream = fs.createWriteStream(warcPath);
 
   // Create warcinfo record
   const warcinfo = await WARCRecord.createWARCInfo(
-    { filename: outputPath, warcVersion: "WARC/1.1" },
+    { filename: warcPath, warcVersion: "WARC/1.1" },
     {
       software: "puppeteer-warcio-archiver",
       datetime: new Date().toISOString(),
@@ -96,7 +96,7 @@ export async function archiveWebPage(url, outputPath, screenshotFileName) {
         warcVersion: "WARC/1.1",
         httpHeaders: {
           ...data.request.headers,
-          'x-puppeteer-request-id': data.request.id,
+          "x-puppeteer-resource-request-id": data.request.id,
         },
       },
       (async function* () {
@@ -122,7 +122,7 @@ export async function archiveWebPage(url, outputPath, screenshotFileName) {
         httpHeaders: {
           ...data.response.headers,
           Status: data.response.status,
-          'x-puppeteer-request-id': data.response.id,
+          "x-puppeteer-resource-request-id": data.response.id,
         },
       },
       (async function* () {
