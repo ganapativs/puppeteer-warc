@@ -77,12 +77,10 @@ async function readWARCRecords(warcPath) {
       resourceDetails.contentSize = content.length;
 
       // Add content for response records
-      if (resourceDetails.warcHeaders["warc-type"] === "response") {
-        if (textMimeTypes.some((type) => httpContentType.includes(type))) {
-          resourceDetails.content = Buffer.from(content).toString();
-        } else {
-          resourceDetails.content = Buffer.from(content);
-        }
+      if (textMimeTypes.some((type) => httpContentType.includes(type))) {
+        resourceDetails.content = Buffer.from(content).toString();
+      } else {
+        resourceDetails.content = Buffer.from(content);
       }
     } catch (error) {
       resourceDetails.contentError = error.message;
