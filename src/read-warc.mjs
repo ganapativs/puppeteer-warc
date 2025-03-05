@@ -29,11 +29,81 @@ const textMimeTypes = [
 ];
 
 /**
+ * Generates a text report from WARC record details
+ * @param {Map} recordsMap - Map containing WARC records
+ * @param {number} recordCount - Total number of records
+ * @returns {string} - Formatted text report
+ */
+function generateTextReport(recordsMap, recordCount) {
+  let report = 'WARC File Report\n';
+  report += '================\n\n';
+  report += `Total Records: ${recordCount}\n\n`;
+
+  for (const [recordId, details] of recordsMap) {
+    report += `${recordId}\n${'-'.repeat(recordId.length)}\n\n`;
+
+    // WARC Headers
+    report += 'WARC Headers:\n';
+    for (const [key, value] of Object.entries(details.warcHeaders)) {
+      report += `  ${key}: ${value}\n`;
+    }
+    report += '\n';
+
+    // HTTP Headers (if present)
+    if (details.httpHeaders) {
+      report += 'HTTP Headers:\n';
+      for (const [key, value] of Object.entries(details.httpHeaders)) {
+        report += `  ${key}: ${value}\n`;
+      }
+      report += '\n';
+    }
+
+    // Content Details
+    report += `Content Type: ${details.contentType}\n`;
+    report += `Content Size: ${details.contentSize} bytes\n\n`;
+
+    if (details.contentError) {
+      report += `Content Error: ${details.contentError}\n`;
+    } else if (typeof details.content === 'string') {
+      report += 'Content:\n';
+      report += '--------\n';
+      report += `${details.content}\n`;
+    } else {
+      report += 'Content: [Binary data]\n';
+    }
+
+    report += `\n${'='.repeat(80)}\n\n`;
+  }
+
+  return report;
+}
+
+/**
+ * Converts Map to a plain object for JSON serialization
+ * @param {Map} recordsMap - Map containing WARC records
+ * @returns {Object} - Plain object representation of the Map
+ */
+function mapToObject(recordsMap) {
+  const obj = {};
+  for (const [key, value] of recordsMap) {
+    // Convert Buffer objects to base64 strings for JSON serialization
+    if (value.content instanceof Buffer) {
+      value.content = value.content.toString('base64');
+      value.contentEncoding = 'base64';
+    }
+    obj[key] = value;
+  }
+  return obj;
+}
+
+/**
  * Reads a WARC file and extracts records into a structured format.
  * @param {string} warcPath - The path to the WARC file.
- * @returns {Promise<{recordCount: number, recordsMap: Map}>} - A promise that resolves with the record count and a map of records.
+ * @param {Object} options - Options for reading the WARC file
+ * @param {('json'|'text')} [options.format='json'] - Output format ('json' or 'text')
+ * @returns {Promise<{recordCount: number, records: Object}|string>} - A promise that resolves with either a JSON object or text report
  */
-export async function readWARC(warcPath) {
+export async function readWARC(warcPath, options = { format: 'json' }) {
   // Create a readable stream from the WARC file
   const nodeStream = fs.createReadStream(warcPath);
   // Initialize the WARC parser with the file stream
@@ -93,9 +163,13 @@ export async function readWARC(warcPath) {
     recordsMap.set(`Record #${recordCount}`, resourceDetails);
   }
 
-  // Return the total record count and the map of records
+  // Return the appropriate format based on options
+  if (options.format === 'text') {
+    return generateTextReport(recordsMap, recordCount);
+  }
+
   return {
     recordCount,
-    recordsMap,
+    records: mapToObject(recordsMap)
   };
 }

@@ -41,19 +41,48 @@ To create a WARC file from a website, use the `src/write-warc-cli.mjs` script. T
 
 ### Reading a WARC File
 
-To read and print the contents of a WARC file, use the `src/read-warc-cli.mjs` script. This script will output the records contained in the specified WARC file.
+To read and print the contents of a WARC file, use the `src/read-warc-cli.mjs` script. This script supports two output formats: JSON and text.
 
 - **Command**:
 
   ```bash
-  node src/read-warc-cli.mjs <path-to-warc-file>
+  node src/read-warc-cli.mjs <path-to-warc-file> [--format=json|text]
   ```
 
-  - **Example**: To read the contents of `examplecom.warc.gz`, run:
+  - **Options**:
+
+    - `--format=json` (default): Outputs the WARC contents in JSON format
+    - `--format=text`: Outputs a human-readable text report
+
+  - **Examples**:
 
     ```bash
+    # Output in JSON format (default)
     node src/read-warc-cli.mjs examplecom.warc.gz
+
+    # Output in text format
+    node src/read-warc-cli.mjs examplecom.warc.gz --format=text
     ```
+
+  The JSON format includes:
+
+  - `recordCount`: Total number of records in the WARC file
+  - `records`: Object containing all records, where each record includes:
+    - `warcHeaders`: WARC headers for the record
+    - `httpHeaders`: HTTP headers (when present)
+    - `contentType`: Type of the content
+    - `contentSize`: Size of the content in bytes
+    - `content`: The actual content (base64 encoded for binary data)
+    - `contentEncoding`: Indicates if content is base64 encoded
+
+  The text format provides a well-structured report that includes:
+
+  - Total number of records
+  - WARC headers for each record
+  - HTTP headers (when present)
+  - Content type and size
+  - Full content for text-based resources
+  - Binary data indicator for non-text resources
 
 ### Previewing WARC Files
 
