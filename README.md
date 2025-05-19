@@ -30,13 +30,18 @@ To create a WARC file from a website, use the `src/write-warc-cli.mjs` script. T
 - **Command**:
 
   ```bash
-  node src/write-warc-cli.mjs <website-url>
+  node src/write-warc-cli.mjs <website-url> [--output-folder=folder] [--screenshot=true|false]
   ```
 
-  - **Example**: To create a WARC file for `https://example.com`, run:
+  - **Options**:
+
+    - `--output-folder=folder`: (Optional) Output directory for the WARC and screenshot files. If the folder does not exist, it will be created.
+    - `--screenshot=true|false`: (Optional, default: true) Whether to save a screenshot of the web page. Set to `false` to skip screenshot generation.
+
+  - **Example**: To create a WARC file for `https://example.com` and save it to the `archives` folder without a screenshot, run:
 
     ```bash
-    node src/write-warc-cli.mjs https://example.com
+    node src/write-warc-cli.mjs https://example.com --output-folder=archives --screenshot=false
     ```
 
 ### Reading a WARC File

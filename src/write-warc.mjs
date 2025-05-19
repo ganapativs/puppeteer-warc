@@ -13,7 +13,7 @@ const puppeteer = addExtra(rebrowserPuppeteer);
  * @param {string} url - The URL of the web page to archive.
  * @param {string} WARCPath - The file path where the WARC file will be saved.
  * @param {Object} options - Additional options for the WARC creation.
- * @param {string} options.screenshotName - The name of the screenshot file to be saved.
+ * @param {string|null} options.screenshotName - The full path for the screenshot file to be saved, or null to skip screenshot.
  */
 export async function writeWARC(url, WARCPath, { screenshotName }) {
   let browser; // Variable to hold the browser instance
@@ -95,8 +95,10 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
     // Navigate to the specified URL and wait for the network to be idle
     await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
 
-    // Capture a screenshot of the page
-    await page.screenshot({ path: `${screenshotName}.png` });
+    // Capture a screenshot of the page if requested
+    if (screenshotName) {
+      await page.screenshot({ path: screenshotName });
+    }
 
     // Get the final rendered HTML content of the page
     const renderedHTML = await page.content();
