@@ -38,11 +38,18 @@ To create a WARC file from a website, use the `src/write-warc-cli.mjs` script. T
     - `--output-folder=folder`: (Optional) Output directory for the WARC and screenshot files. If the folder does not exist, it will be created.
     - `--screenshot=true|false`: (Optional, default: true) Whether to save a screenshot of the web page. Set to `false` to skip screenshot generation.
 
-  - **Example**: To create a WARC file for `https://example.com` and save it to the `archives` folder without a screenshot, run:
+  - **Example**: To create a WARC file for `https://example.com` and save it to the `example` folder with a screenshot, run:
 
     ```bash
-    node src/write-warc-cli.mjs https://example.com --output-folder=archives --screenshot=false
+    node src/write-warc-cli.mjs https://example.com --output-folder=example --screenshot=true
     ```
+
+    This will produce the following output files in the `example` folder:
+
+    - `example/examplecom.warc.gz` (the WARC archive)
+    - `example/examplecom.png` (the screenshot)
+
+    You can find these example output files in the [example](example) directory of this repository.
 
 ### Reading a WARC File
 
@@ -88,6 +95,10 @@ To read and print the contents of a WARC file, use the `src/read-warc-cli.mjs` s
   - Content type and size
   - Full content for text-based resources
   - Binary data indicator for non-text resources
+
+  **Example Output:**
+
+  You can find a sample JSON output produced by reading the `example/examplecom.warc.gz` file in [`example/examplecom-read-output.json`](example/examplecom-read-output.json).
 
 ### Previewing WARC Files
 

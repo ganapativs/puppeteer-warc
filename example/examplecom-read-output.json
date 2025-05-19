@@ -1,0 +1,110 @@
+{
+  "recordCount": 5,
+  "records": {
+    "Record #1": {
+      "warcHeaders": {
+        "content-length": "73",
+        "content-type": "application/warc-fields",
+        "warc-date": "2025-05-19T16:41:32.168Z",
+        "warc-filename": "/Users/guns/Projects/Web-ARChive-WARC/puppeteer-warc/example/examplecom.warc.gz",
+        "warc-record-id": "<urn:uuid:4475be8d-1151-4a64-a351-b7d92abfe02a>",
+        "warc-type": "warcinfo"
+      },
+      "contentType": "application/warc-fields",
+      "contentSize": 73,
+      "content": "c29mdHdhcmU6IHB1cHBldGVlci13YXJjaW8tYXJjaGl2ZXINCmRhdGV0aW1lOiAyMDI1LTA1LTE5VDE2OjQxOjMyLjE2N1oNCg==",
+      "contentEncoding": "base64"
+    },
+    "Record #2": {
+      "warcHeaders": {
+        "content-length": "67",
+        "content-type": "application/http; msgtype=request",
+        "warc-block-digest": "sha256:5f39003115e275eed1a13152956744ea90837ed5bd3b9c0b239812cd80a493e3",
+        "warc-date": "2025-05-19T16:41:32.173Z",
+        "warc-payload-digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "warc-record-id": "<urn:uuid:dc9ab3ed-6315-4296-96f9-f80960da3412>",
+        "warc-target-uri": "https://example.com/#rendered-html",
+        "warc-type": "request"
+      },
+      "httpHeaders": {
+        "x-puppeteer-resource-request-id": "rendered-html"
+      },
+      "contentType": "application/http; msgtype=request",
+      "contentSize": 0,
+      "content": "",
+      "contentEncoding": "base64"
+    },
+    "Record #3": {
+      "warcHeaders": {
+        "content-length": "1353",
+        "content-type": "application/http; msgtype=response",
+        "warc-block-digest": "sha256:7c6e92933761fb0715529f03f1915f70eeb1a2d75814abf0b6401f2ec4a380f2",
+        "warc-date": "2025-05-19T16:41:32.173Z",
+        "warc-payload-digest": "sha256:202f5e47301b2f89285bcc5d2d852b38990dcc860c571cbe22e96cbabe3bc125",
+        "warc-record-id": "<urn:uuid:3fc50bee-60fa-40fb-aca8-6d038eca44bf>",
+        "warc-target-uri": "https://example.com/#rendered-html",
+        "warc-type": "response"
+      },
+      "httpHeaders": {
+        "content-type": "text/html",
+        "status": "200",
+        "x-puppeteer-resource-request-id": "rendered-html"
+      },
+      "contentType": "text/html",
+      "contentSize": 1248,
+      "content": "<!DOCTYPE html><html><head>\n    <title>Example Domain</title>\n\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <style type=\"text/css\">\n    body {\n        background-color: #f0f0f2;\n        margin: 0;\n        padding: 0;\n        font-family: -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Open Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        \n    }\n    div {\n        width: 600px;\n        margin: 5em auto;\n        padding: 2em;\n        background-color: #fdfdff;\n        border-radius: 0.5em;\n        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);\n    }\n    a:link, a:visited {\n        color: #38488f;\n        text-decoration: none;\n    }\n    @media (max-width: 700px) {\n        div {\n            margin: 0 auto;\n            width: auto;\n        }\n    }\n    </style>    \n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n    <p>This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.</p>\n    <p><a href=\"https://www.iana.org/domains/example\">More information...</a></p>\n</div>\n\n\n</body></html>"
+    },
+    "Record #4": {
+      "warcHeaders": {
+        "content-length": "329",
+        "content-type": "application/http; msgtype=request",
+        "warc-block-digest": "sha256:cc23151b6a15c604512104bb397230610f27579ebc1b71e52c75f3c9b5e14799",
+        "warc-date": "2025-05-19T16:41:30.945Z",
+        "warc-payload-digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "warc-record-id": "<urn:uuid:6174579d-47a1-4770-836e-60094b3e910a>",
+        "warc-target-uri": "https://example.com/favicon.ico",
+        "warc-type": "request"
+      },
+      "httpHeaders": {
+        "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+        "accept-language": "en-GB,en;q=0.9",
+        "referer": "https://example.com/",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+        "x-puppeteer-resource-request-id": "8401.2"
+      },
+      "contentType": "application/http; msgtype=request",
+      "contentSize": 0,
+      "content": "",
+      "contentEncoding": "base64"
+    },
+    "Record #5": {
+      "warcHeaders": {
+        "content-length": "1671",
+        "content-type": "application/http; msgtype=response",
+        "warc-block-digest": "sha256:aa3d2c4771b42e08471ac040b8eec9b04ec62db1c6e4ac2c6006cdaa6fd7dfa4",
+        "warc-date": "2025-05-19T16:41:31.224Z",
+        "warc-payload-digest": "sha256:ea8fac7c65fb589b0d53560f5251f74f9e9b243478dcb6b3ea79b5e36449c8d9",
+        "warc-record-id": "<urn:uuid:7d0901d2-5756-42ca-912c-71e1e40faa66>",
+        "warc-target-uri": "https://example.com/favicon.ico",
+        "warc-type": "response"
+      },
+      "httpHeaders": {
+        "accept-ranges": "bytes",
+        "cache-control": "max-age=0, no-cache, no-store",
+        "content-length": "1256",
+        "content-type": "text/html",
+        "date": "Mon, 19 May 2025 16:41:31 GMT",
+        "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+        "expires": "Mon, 19 May 2025 16:41:31 GMT",
+        "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+        "pragma": "no-cache",
+        "server": "AkamaiNetStorage",
+        "status": "404",
+        "x-puppeteer-resource-request-id": "8401.2"
+      },
+      "contentType": "text/html",
+      "contentSize": 1256,
+      "content": "<!doctype html>\n<html>\n<head>\n    <title>Example Domain</title>\n\n    <meta charset=\"utf-8\" />\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <style type=\"text/css\">\n    body {\n        background-color: #f0f0f2;\n        margin: 0;\n        padding: 0;\n        font-family: -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Open Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        \n    }\n    div {\n        width: 600px;\n        margin: 5em auto;\n        padding: 2em;\n        background-color: #fdfdff;\n        border-radius: 0.5em;\n        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);\n    }\n    a:link, a:visited {\n        color: #38488f;\n        text-decoration: none;\n    }\n    @media (max-width: 700px) {\n        div {\n            margin: 0 auto;\n            width: auto;\n        }\n    }\n    </style>    \n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n    <p>This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.</p>\n    <p><a href=\"https://www.iana.org/domains/example\">More information...</a></p>\n</div>\n</body>\n</html>\n"
+    }
+  }
+}
