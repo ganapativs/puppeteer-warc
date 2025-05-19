@@ -1,6 +1,6 @@
 # Puppeteer WARC
 
-This project demonstrates how to use Puppeteer to render a web page and create a [WARC](https://iipc.github.io/warc-specifications/specifications/warc-format/warc-1.1/) file of the rendered page and its resources. This can be useful for archiving web pages for long-term storage or offline browsing.
+This project provides a CLI tool to archive any web page and all its resources as a [WARC](https://iipc.github.io/warc-specifications/specifications/warc-format/warc-1.1/) file using Puppeteer. It supports optional screenshot capture, custom output folders, and includes example outputs for both WARC creation and reading/parsing. This makes it easy to preserve, browse, and analyze web pages for long-term storage or offline use.
 
 ## Requirements
 
