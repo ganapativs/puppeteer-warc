@@ -8,6 +8,7 @@
  */
 
 import { readWARC } from "./read-warc.mjs"; // Import the readWARC function from the read-warc module
+import { logError } from "./utils-error.mjs";
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -17,17 +18,15 @@ const format = formatArg ? formatArg.split("=")[1] : "json";
 
 // Validate format option
 if (format && !["json", "text"].includes(format)) {
-  console.error("Invalid format option. Use --format=json or --format=text");
+  logError("Invalid format option. Use --format=json or --format=text");
   process.exit(1);
 }
 
 // Check if the WARC file path is provided
 if (!warcPath) {
   // If no file path is provided, log an error message and exit the process
-  console.error("Please provide the path to a WARC file as an argument.");
-  console.error(
-    "Usage: node script.js <path-to-warc-file> [--format=json|text]",
-  );
+  logError("Please provide the path to a WARC file as an argument.");
+  logError("Usage: node script.js <path-to-warc-file> [--format=json|text]");
   process.exit(1); // Exit the process with a non-zero status code to indicate an error
 }
 
@@ -42,5 +41,5 @@ readWARC(warcPath, { format })
   })
   .catch((error) => {
     // If an error occurs during the read process, log the error message
-    console.error("Fatal error:", error);
+    logError(error, "Fatal error in read-warc-cli");
   });

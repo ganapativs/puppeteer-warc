@@ -7,6 +7,16 @@ import {
   writeRequestResponse,
   writeWARCInfo,
 } from "./write-utils.mjs";
+import { logError } from "./utils-error.mjs";
+
+// @ts-check
+/**
+ * @typedef {import("./types/write-warc-output").WarcRequestData} WarcRequestData
+ * @typedef {import("./types/write-warc-output").WarcResponseData} WarcResponseData
+ * @typedef {import("./types/write-warc-output").WarcResourceEntry} WarcResourceEntry
+ * @typedef {import("./types/write-warc-output").WarcResourceData} WarcResourceData
+ * @typedef {import("./types/write-warc-output").WriteWARCOptions} WriteWARCOptions
+ */
 
 // Enhance Puppeteer with additional plugins
 const puppeteer = addExtra(rebrowserPuppeteer);
@@ -17,8 +27,9 @@ const puppeteer = addExtra(rebrowserPuppeteer);
  *
  * @param {string} url - The URL of the web page to archive.
  * @param {string} WARCPath - The file path where the WARC file will be saved.
- * @param {Object} options - Additional options for the WARC creation.
+ * @param {WriteWARCOptions} options - Additional options for the WARC creation.
  * @param {string|null} options.screenshotName - The full path for the screenshot file to be saved, or null to skip screenshot.
+ * @returns {Promise<void>}
  */
 export async function writeWARC(url, WARCPath, { screenshotName }) {
   let browser; // Variable to hold the browser instance
@@ -95,7 +106,7 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
         const resourceEntry = entries[id] || {};
         resourceEntry.response = responseData;
       } catch (error) {
-        console.warn(`Failed to capture response for ${url}:`, error);
+        logError(error, `Failed to capture response for ${url}`);
       }
     });
 
@@ -162,7 +173,7 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
     // Close the browser instance
     await browser.close();
   } catch (error) {
-    console.error("Error during WARC creation:", error);
+    logError(error, "Error during WARC creation");
     throw error; // Rethrow the error after logging
   } finally {
     if (WARCOutputStream) {

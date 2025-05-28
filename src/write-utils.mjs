@@ -2,15 +2,33 @@ import fs from "node:fs";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { WARCRecord, WARCSerializer } from "warcio";
+import { logError } from "./utils-error.mjs";
+
+// @ts-check
+/**
+ * @typedef {import("./types/write-warc-output").WarcRequestData} WarcRequestData
+ * @typedef {import("./types/write-warc-output").WarcResponseData} WarcResponseData
+ * @typedef {import("./types/write-warc-output").WarcResourceEntry} WarcResourceEntry
+ * @typedef {import("./types/write-warc-output").WarcResourceData} WarcResourceData
+ */
 
 // Function to create a writable stream for the WARC file
 // This function takes a file path and returns a writable stream to that file
+/**
+ * @param {string} WARCPath
+ * @returns {import('fs').WriteStream}
+ */
 export function getWARCOutputStream(WARCPath) {
   return fs.createWriteStream(WARCPath);
 }
 
 // Asynchronously writes a WARC info record to the provided WARC output stream
 // WARC info records contain metadata about the WARC file
+/**
+ * @param {import('fs').WriteStream} WARCOutputStream
+ * @param {string} WARCPath
+ * @returns {Promise<void>}
+ */
 export async function writeWARCInfo(WARCOutputStream, WARCPath) {
   // Create a WARC info record with metadata such as filename and software version
   const WARCInfo = await WARCRecord.createWARCInfo(
@@ -33,6 +51,12 @@ export async function writeWARCInfo(WARCOutputStream, WARCPath) {
 
 // Asynchronously writes request and response records to the WARC file
 // This function handles both request and response data, serializing and writing them to the WARC output stream
+/**
+ * @param {import('fs').WriteStream} WARCOutputStream
+ * @param {string} url
+ * @param {WarcResourceEntry} data
+ * @returns {Promise<void>}
+ */
 export async function writeRequestResponse(WARCOutputStream, url, data) {
   // Check if the response buffer is available; if not, exit the function
   if (!data.response?.buffer) return;
@@ -102,6 +126,10 @@ export async function writeRequestResponse(WARCOutputStream, url, data) {
 
 // Function to close the WARC file stream
 // This function ends the writable stream, ensuring all data is flushed and the file is properly closed
+/**
+ * @param {import('fs').WriteStream} WARCOutputStream
+ * @returns {void}
+ */
 export function closeWARCOutputStream(WARCOutputStream) {
   WARCOutputStream.end();
 }
