@@ -38,16 +38,16 @@ To create a WARC file from a website, use the `src/write-warc-cli.mjs` script. T
     - `--output-folder=folder`: (Optional) Output directory for the WARC and screenshot files. If the folder does not exist, it will be created.
     - `--screenshot=true|false`: (Optional, default: true) Whether to save a screenshot of the web page. Set to `false` to skip screenshot generation.
 
-  - **Example**: To create a WARC file for `https://example.com` and save it to the `example` folder with a screenshot, run:
+  - **Example**: To create a WARC file for `https://www.google.com` and save it to the `example` folder with a screenshot, run:
 
     ```bash
-    node src/write-warc-cli.mjs https://example.com --output-folder=example --screenshot=true
+    node src/write-warc-cli.mjs https://www.google.com --output-folder=example --screenshot=true
     ```
 
     This will produce the following output files in the `example` folder:
 
-    - `example/examplecom.warc.gz` (the WARC archive)
-    - `example/examplecom.png` (the screenshot)
+    - `example/wwwgooglecom.warc.gz` (the WARC archive)
+    - `example/wwwgooglecom.png` (the screenshot)
 
     You can find these example output files in the [example](example) directory of this repository.
 
@@ -70,10 +70,10 @@ To read and print the contents of a WARC file, use the `src/read-warc-cli.mjs` s
 
     ```bash
     # Output in JSON format (default)
-    node src/read-warc-cli.mjs examplecom.warc.gz
+    node src/read-warc-cli.mjs example/wwwgooglecom.warc.gz
 
     # Output in text format
-    node src/read-warc-cli.mjs examplecom.warc.gz --format=text
+    node src/read-warc-cli.mjs example/wwwgooglecom.warc.gz --format=text
     ```
 
   The JSON format includes:
@@ -98,7 +98,7 @@ To read and print the contents of a WARC file, use the `src/read-warc-cli.mjs` s
 
   **Example Output:**
 
-  You can find a sample JSON output produced by reading the `example/examplecom.warc.gz` file in [`example/examplecom-read-output.json`](example/examplecom-read-output.json).
+  You can find a sample JSON output produced by reading the `example/wwwgooglecom.warc.gz` file in [`example/wwwgooglecom-read-output.json`](example/wwwgooglecom-read-output.json).
 
 ### Previewing WARC Files
 
