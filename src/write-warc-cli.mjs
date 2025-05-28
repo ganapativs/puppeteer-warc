@@ -6,9 +6,9 @@
  * Example: node write-warc.js https://example.com
  */
 
-import { writeWARC } from "./write-warc.mjs";
 import fs from "node:fs";
 import path from "node:path";
+import { writeWARC } from "./write-warc.mjs";
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -26,7 +26,7 @@ if (screenshotArg) {
 if (!website) {
   console.error("Please provide the website URL as an argument.");
   console.error(
-    "Usage: node script.js <website-url> [--output-folder=folder] [--screenshot=true|false]"
+    "Usage: node script.js <website-url> [--output-folder=folder] [--screenshot=true|false]",
   );
   process.exit(1); // Exit the process with an error code
 }

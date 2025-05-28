@@ -26,7 +26,7 @@ if (!warcPath) {
   // If no file path is provided, log an error message and exit the process
   console.error("Please provide the path to a WARC file as an argument.");
   console.error(
-    "Usage: node script.js <path-to-warc-file> [--format=json|text]"
+    "Usage: node script.js <path-to-warc-file> [--format=json|text]",
   );
   process.exit(1); // Exit the process with a non-zero status code to indicate an error
 }

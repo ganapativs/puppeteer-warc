@@ -18,7 +18,7 @@ export async function writeWARCInfo(WARCOutputStream, WARCPath) {
     {
       software: "puppeteer-warcio-archiver",
       datetime: new Date().toISOString(),
-    }
+    },
   );
 
   // Serialize the WARC info record with gzip compression
@@ -54,7 +54,7 @@ export async function writeRequestResponse(WARCOutputStream, url, data) {
       if (data.request.postData) {
         yield new TextEncoder().encode(await data.request.postData);
       }
-    })()
+    })(),
   );
 
   // Serialize the request record with gzip compression
@@ -86,7 +86,7 @@ export async function writeRequestResponse(WARCOutputStream, url, data) {
     // Generator function to yield the response body
     (async function* () {
       yield data.response.buffer;
-    })()
+    })(),
   );
 
   // Serialize the response record with gzip compression
