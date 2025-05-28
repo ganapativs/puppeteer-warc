@@ -25,6 +25,7 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double",
+      "trailingCommas": "all",
       "indentStyle": "space"
     }
   }
