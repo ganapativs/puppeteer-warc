@@ -9,6 +9,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { writeWARC } from "./write-warc.mjs";
+import { logError } from "./utils-error.mjs";
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -24,8 +25,8 @@ if (screenshotArg) {
 
 // Check if the website URL is provided
 if (!website) {
-  console.error("Please provide the website URL as an argument.");
-  console.error(
+  logError("Please provide the website URL as an argument.");
+  logError(
     "Usage: node script.js <website-url> [--output-folder=folder] [--screenshot=true|false]",
   );
   process.exit(1); // Exit the process with an error code
@@ -53,4 +54,4 @@ writeWARC(website, warcPath, {
   screenshotName: screenshotEnabled ? screenshotPath : null,
 })
   .then(() => console.log("Archive complete")) // Log success message
-  .catch(console.error); // Log any errors encountered during the process
+  .catch((err) => logError(err, "Fatal error in write-warc-cli")); // Log any errors encountered during the process

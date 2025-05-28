@@ -1,5 +1,13 @@
 import fs from "node:fs"; // Import Node.js file system module for file operations
 import { WARCParser } from "warcio"; // Import WARCParser from the warcio library for parsing WARC files
+import { logError } from "./utils-error.mjs";
+// @ts-check
+/**
+ * @typedef {import("./types/warc-read-output").WarcReadOutput} WarcReadOutput
+ * @typedef {import("./types/warc-read-output").WarcRecord} WarcRecord
+ * @typedef {import("./types/warc-read-output").WarcRecordMap} WarcRecordMap
+ * @typedef {import("./types/warc-read-output").WarcHeaders} WarcHeaders
+ */
 
 // List of MIME types considered as text for content extraction
 const textMimeTypes = [
@@ -99,9 +107,8 @@ function mapToObject(recordsMap) {
 /**
  * Reads a WARC file and extracts records into a structured format.
  * @param {string} warcPath - The path to the WARC file.
- * @param {Object} options - Options for reading the WARC file
- * @param {('json'|'text')} [options.format='json'] - Output format ('json' or 'text')
- * @returns {Promise<{recordCount: number, records: Object}|string>} - A promise that resolves with either a JSON object or text report
+ * @param {{ format?: 'json'|'text' }} [options] - Options for reading the WARC file
+ * @returns {Promise<WarcReadOutput|string>} - A promise that resolves with either a JSON object or text report
  */
 export async function readWARC(warcPath, options = { format: "json" }) {
   // Create a readable stream from the WARC file
@@ -156,7 +163,9 @@ export async function readWARC(warcPath, options = { format: "json" }) {
       }
     } catch (error) {
       // Capture any errors encountered during content extraction
-      resourceDetails.contentError = error.message;
+      logError(error, "Error extracting content from WARC record");
+      resourceDetails.contentError =
+        error instanceof Error ? error.message : String(error);
     }
 
     // Add resource details to the map with a unique key
