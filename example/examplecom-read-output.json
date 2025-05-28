@@ -5,29 +5,29 @@
       "warcHeaders": {
         "content-length": "73",
         "content-type": "application/warc-fields",
-        "warc-date": "2025-05-19T16:41:32.168Z",
+        "warc-date": "2025-05-28T11:31:02.429Z",
         "warc-filename": "/Users/guns/Projects/Web-ARChive-WARC/puppeteer-warc/example/examplecom.warc.gz",
-        "warc-record-id": "<urn:uuid:4475be8d-1151-4a64-a351-b7d92abfe02a>",
+        "warc-record-id": "<urn:uuid:963fba8f-e251-4fda-9c92-6ba2737ba1dd>",
         "warc-type": "warcinfo"
       },
       "contentType": "application/warc-fields",
       "contentSize": 73,
-      "content": "c29mdHdhcmU6IHB1cHBldGVlci13YXJjaW8tYXJjaGl2ZXINCmRhdGV0aW1lOiAyMDI1LTA1LTE5VDE2OjQxOjMyLjE2N1oNCg==",
+      "content": "c29mdHdhcmU6IHB1cHBldGVlci13YXJjaW8tYXJjaGl2ZXINCmRhdGV0aW1lOiAyMDI1LTA1LTI4VDExOjMxOjAyLjQyOVoNCg==",
       "contentEncoding": "base64"
     },
     "Record #2": {
       "warcHeaders": {
-        "content-length": "67",
+        "content-length": "57",
         "content-type": "application/http; msgtype=request",
-        "warc-block-digest": "sha256:5f39003115e275eed1a13152956744ea90837ed5bd3b9c0b239812cd80a493e3",
-        "warc-date": "2025-05-19T16:41:32.173Z",
+        "warc-block-digest": "sha256:06a67758be3004e3b1b237f2f67e17d06f5bb767f541dd3646c06a659ce435c1",
+        "warc-date": "2025-05-28T11:31:02.436Z",
         "warc-payload-digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "warc-record-id": "<urn:uuid:dc9ab3ed-6315-4296-96f9-f80960da3412>",
+        "warc-record-id": "<urn:uuid:9808a278-d7c6-41f9-afb1-69441d80938c>",
         "warc-target-uri": "https://example.com/#rendered-html",
         "warc-type": "request"
       },
       "httpHeaders": {
-        "x-puppeteer-resource-request-id": "rendered-html"
+        "x-resource-request-id": "rendered-html"
       },
       "contentType": "application/http; msgtype=request",
       "contentSize": 0,
@@ -36,19 +36,19 @@
     },
     "Record #3": {
       "warcHeaders": {
-        "content-length": "1353",
+        "content-length": "1408",
         "content-type": "application/http; msgtype=response",
-        "warc-block-digest": "sha256:7c6e92933761fb0715529f03f1915f70eeb1a2d75814abf0b6401f2ec4a380f2",
-        "warc-date": "2025-05-19T16:41:32.173Z",
+        "warc-block-digest": "sha256:6fb70b4b2998841076c8a3b95990e9cf1fc6c8c780c6a1811786b09d802d2847",
+        "warc-date": "2025-05-28T11:31:02.436Z",
         "warc-payload-digest": "sha256:202f5e47301b2f89285bcc5d2d852b38990dcc860c571cbe22e96cbabe3bc125",
-        "warc-record-id": "<urn:uuid:3fc50bee-60fa-40fb-aca8-6d038eca44bf>",
+        "warc-record-id": "<urn:uuid:21a262bf-9bf8-4d46-84fa-14ab40849224>",
         "warc-target-uri": "https://example.com/#rendered-html",
         "warc-type": "response"
       },
       "httpHeaders": {
         "content-type": "text/html",
         "status": "200",
-        "x-puppeteer-resource-request-id": "rendered-html"
+        "x-resource-request-id": "rendered-html"
       },
       "contentType": "text/html",
       "contentSize": 1248,
@@ -56,12 +56,12 @@
     },
     "Record #4": {
       "warcHeaders": {
-        "content-length": "329",
+        "content-length": "320",
         "content-type": "application/http; msgtype=request",
-        "warc-block-digest": "sha256:cc23151b6a15c604512104bb397230610f27579ebc1b71e52c75f3c9b5e14799",
-        "warc-date": "2025-05-19T16:41:30.945Z",
+        "warc-block-digest": "sha256:b1703320f67e316de3619f64fb868285c56c8a123c1796dc6e055a9fa9007d02",
+        "warc-date": "2025-05-28T11:31:01.463Z",
         "warc-payload-digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "warc-record-id": "<urn:uuid:6174579d-47a1-4770-836e-60094b3e910a>",
+        "warc-record-id": "<urn:uuid:813a6536-1ba9-466b-ba82-5641f2a8a179>",
         "warc-target-uri": "https://example.com/favicon.ico",
         "warc-type": "request"
       },
@@ -70,7 +70,7 @@
         "accept-language": "en-GB,en;q=0.9",
         "referer": "https://example.com/",
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-        "x-puppeteer-resource-request-id": "8401.2"
+        "x-resource-request-id": "33202.2"
       },
       "contentType": "application/http; msgtype=request",
       "contentSize": 0,
@@ -79,12 +79,12 @@
     },
     "Record #5": {
       "warcHeaders": {
-        "content-length": "1671",
+        "content-length": "2091",
         "content-type": "application/http; msgtype=response",
-        "warc-block-digest": "sha256:aa3d2c4771b42e08471ac040b8eec9b04ec62db1c6e4ac2c6006cdaa6fd7dfa4",
-        "warc-date": "2025-05-19T16:41:31.224Z",
+        "warc-block-digest": "sha256:d3a23b37998e65eb6a4501b9966652c8e211db18fb8b0386a2726ca729d669ba",
+        "warc-date": "2025-05-28T11:31:01.754Z",
         "warc-payload-digest": "sha256:ea8fac7c65fb589b0d53560f5251f74f9e9b243478dcb6b3ea79b5e36449c8d9",
-        "warc-record-id": "<urn:uuid:7d0901d2-5756-42ca-912c-71e1e40faa66>",
+        "warc-record-id": "<urn:uuid:b9fb61bb-aee1-4c2d-90b1-26c4dfc7b26a>",
         "warc-target-uri": "https://example.com/favicon.ico",
         "warc-type": "response"
       },
@@ -93,14 +93,17 @@
         "cache-control": "max-age=0, no-cache, no-store",
         "content-length": "1256",
         "content-type": "text/html",
-        "date": "Mon, 19 May 2025 16:41:31 GMT",
+        "date": "Wed, 28 May 2025 11:31:01 GMT",
         "etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
-        "expires": "Mon, 19 May 2025 16:41:31 GMT",
+        "expires": "Wed, 28 May 2025 11:31:01 GMT",
         "last-modified": "Mon, 13 Jan 2025 20:11:20 GMT",
         "pragma": "no-cache",
         "server": "AkamaiNetStorage",
         "status": "404",
-        "x-puppeteer-resource-request-id": "8401.2"
+        "x-remote-address-ip": "96.7.128.198",
+        "x-remote-address-port": "443",
+        "x-resource-request-id": "33202.2",
+        "x-timing-data": "{\"requestTime\":284382.422719,\"proxyStart\":-1,\"proxyEnd\":-1,\"dnsStart\":-1,\"dnsEnd\":-1,\"connectStart\":-1,\"connectEnd\":-1,\"sslStart\":-1,\"sslEnd\":-1,\"workerStart\":-1,\"workerReady\":-1,\"workerFetchStart\":-1,\"workerRespondWithSettled\":-1,\"sendStart\":0.231,\"sendEnd\":0.339,\"pushStart\":0,\"pushEnd\":0,\"receiveHeadersStart\":288.147,\"receiveHeadersEnd\":288.356}"
       },
       "contentType": "text/html",
       "contentSize": 1256,

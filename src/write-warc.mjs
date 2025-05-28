@@ -1,7 +1,12 @@
 import { executablePath } from "puppeteer";
 import { addExtra } from "puppeteer-extra";
 import rebrowserPuppeteer from "rebrowser-puppeteer-core";
-import { closeWARCOutputStream, getWARCOutputStream, writeRequestResponse, writeWARCInfo } from "./write-utils.mjs";
+import {
+  closeWARCOutputStream,
+  getWARCOutputStream,
+  writeRequestResponse,
+  writeWARCInfo,
+} from "./write-utils.mjs";
 
 // Enhance Puppeteer with additional plugins
 const puppeteer = addExtra(rebrowserPuppeteer);
@@ -77,6 +82,8 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
           headers: response.headers(), // Response headers
           timestamp: new Date().toISOString(), // Timestamp of the response
           buffer: await response.buffer().catch(() => null), // Capture response body
+          remoteAddress: response.remoteAddress(), // Add remote IP address
+          timing: response.timing(), // Add timing information
         };
 
         // Initialize entry for the URL if it doesn't exist
@@ -120,16 +127,14 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
       request: {
         id: "rendered-html",
         method: "GET",
-        headers: resourceData.get(url)?.request?.headers || {},
-        timestamp:
-          resourceData.get(url)?.request?.timestamp || new Date().toISOString(),
+        headers: {},
+        timestamp: new Date().toISOString(),
       },
       response: {
         id: "rendered-html",
         status: 200,
         headers: {
           "content-type": "text/html",
-          ...resourceData.get(url)?.response?.headers,
         },
         timestamp: new Date().toISOString(),
         buffer: Buffer.from(renderedHTML),

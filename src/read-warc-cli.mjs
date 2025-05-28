@@ -12,11 +12,11 @@ import { readWARC } from "./read-warc.mjs"; // Import the readWARC function from
 // Parse command line arguments
 const args = process.argv.slice(2);
 const warcPath = args[0];
-const formatArg = args.find(arg => arg.startsWith('--format='));
-const format = formatArg ? formatArg.split('=')[1] : 'json';
+const formatArg = args.find((arg) => arg.startsWith("--format="));
+const format = formatArg ? formatArg.split("=")[1] : "json";
 
 // Validate format option
-if (format && !['json', 'text'].includes(format)) {
+if (format && !["json", "text"].includes(format)) {
   console.error("Invalid format option. Use --format=json or --format=text");
   process.exit(1);
 }
@@ -25,14 +25,16 @@ if (format && !['json', 'text'].includes(format)) {
 if (!warcPath) {
   // If no file path is provided, log an error message and exit the process
   console.error("Please provide the path to a WARC file as an argument.");
-  console.error("Usage: node script.js <path-to-warc-file> [--format=json|text]");
+  console.error(
+    "Usage: node script.js <path-to-warc-file> [--format=json|text]"
+  );
   process.exit(1); // Exit the process with a non-zero status code to indicate an error
 }
 
 // Read the WARC file using the readWARC function and handle the results
 readWARC(warcPath, { format })
   .then((result) => {
-    if (format === 'json') {
+    if (format === "json") {
       console.log(JSON.stringify(result, null, 2));
     } else {
       console.log(result);
