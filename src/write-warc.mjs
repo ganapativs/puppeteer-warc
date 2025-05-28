@@ -40,7 +40,7 @@ export async function writeWARC(url, WARCPath, { screenshotName }) {
 
     // Set a custom user agent to mimic a real browser
     await page.setUserAgent(
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
     );
 
     // Map to store request and response data for each resource
