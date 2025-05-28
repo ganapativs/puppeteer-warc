@@ -35,27 +35,27 @@ const textMimeTypes = [
  * @returns {string} - Formatted text report
  */
 function generateTextReport(recordsMap, recordCount) {
-  let report = 'WARC File Report\n';
-  report += '================\n\n';
+  let report = "WARC File Report\n";
+  report += "================\n\n";
   report += `Total Records: ${recordCount}\n\n`;
 
   for (const [recordId, details] of recordsMap) {
-    report += `${recordId}\n${'-'.repeat(recordId.length)}\n\n`;
+    report += `${recordId}\n${"-".repeat(recordId.length)}\n\n`;
 
     // WARC Headers
-    report += 'WARC Headers:\n';
+    report += "WARC Headers:\n";
     for (const [key, value] of Object.entries(details.warcHeaders)) {
       report += `  ${key}: ${value}\n`;
     }
-    report += '\n';
+    report += "\n";
 
     // HTTP Headers (if present)
     if (details.httpHeaders) {
-      report += 'HTTP Headers:\n';
+      report += "HTTP Headers:\n";
       for (const [key, value] of Object.entries(details.httpHeaders)) {
         report += `  ${key}: ${value}\n`;
       }
-      report += '\n';
+      report += "\n";
     }
 
     // Content Details
@@ -64,15 +64,15 @@ function generateTextReport(recordsMap, recordCount) {
 
     if (details.contentError) {
       report += `Content Error: ${details.contentError}\n`;
-    } else if (typeof details.content === 'string') {
-      report += 'Content:\n';
-      report += '--------\n';
+    } else if (typeof details.content === "string") {
+      report += "Content:\n";
+      report += "--------\n";
       report += `${details.content}\n`;
     } else {
-      report += 'Content: [Binary data]\n';
+      report += "Content: [Binary data]\n";
     }
 
-    report += `\n${'='.repeat(80)}\n\n`;
+    report += `\n${"=".repeat(80)}\n\n`;
   }
 
   return report;
@@ -88,8 +88,8 @@ function mapToObject(recordsMap) {
   for (const [key, value] of recordsMap) {
     // Convert Buffer objects to base64 strings for JSON serialization
     if (value.content instanceof Buffer) {
-      value.content = value.content.toString('base64');
-      value.contentEncoding = 'base64';
+      value.content = value.content.toString("base64");
+      value.contentEncoding = "base64";
     }
     obj[key] = value;
   }
@@ -103,7 +103,7 @@ function mapToObject(recordsMap) {
  * @param {('json'|'text')} [options.format='json'] - Output format ('json' or 'text')
  * @returns {Promise<{recordCount: number, records: Object}|string>} - A promise that resolves with either a JSON object or text report
  */
-export async function readWARC(warcPath, options = { format: 'json' }) {
+export async function readWARC(warcPath, options = { format: "json" }) {
   // Create a readable stream from the WARC file
   const nodeStream = fs.createReadStream(warcPath);
   // Initialize the WARC parser with the file stream
@@ -164,12 +164,12 @@ export async function readWARC(warcPath, options = { format: 'json' }) {
   }
 
   // Return the appropriate format based on options
-  if (options.format === 'text') {
+  if (options.format === "text") {
     return generateTextReport(recordsMap, recordCount);
   }
 
   return {
     recordCount,
-    records: mapToObject(recordsMap)
+    records: mapToObject(recordsMap),
   };
 }

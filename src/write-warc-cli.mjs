@@ -13,19 +13,21 @@ import path from "node:path";
 // Parse command line arguments
 const args = process.argv.slice(2);
 const website = args[0];
-const outputFolderArg = args.find(arg => arg.startsWith('--output-folder='));
-const outputFolder = outputFolderArg ? outputFolderArg.split('=')[1] : null;
-const screenshotArg = args.find(arg => arg.startsWith('--screenshot='));
+const outputFolderArg = args.find((arg) => arg.startsWith("--output-folder="));
+const outputFolder = outputFolderArg ? outputFolderArg.split("=")[1] : null;
+const screenshotArg = args.find((arg) => arg.startsWith("--screenshot="));
 let screenshotEnabled = false;
 if (screenshotArg) {
-  const val = screenshotArg.split('=')[1];
-  screenshotEnabled = val !== 'false';
+  const val = screenshotArg.split("=")[1];
+  screenshotEnabled = val !== "false";
 }
 
 // Check if the website URL is provided
 if (!website) {
   console.error("Please provide the website URL as an argument.");
-  console.error("Usage: node script.js <website-url> [--output-folder=folder] [--screenshot=true|false]");
+  console.error(
+    "Usage: node script.js <website-url> [--output-folder=folder] [--screenshot=true|false]"
+  );
   process.exit(1); // Exit the process with an error code
 }
 

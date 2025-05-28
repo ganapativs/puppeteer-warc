@@ -46,7 +46,7 @@ export async function writeRequestResponse(WARCOutputStream, url, data) {
       warcVersion: "WARC/1.1",
       httpHeaders: {
         ...data.request.headers,
-        "x-puppeteer-resource-request-id": data.request.id,
+        "x-resource-request-id": data.request.id,
       },
     },
     // Generator function to yield the request body if postData is available
@@ -76,8 +76,11 @@ export async function writeRequestResponse(WARCOutputStream, url, data) {
       warcVersion: "WARC/1.1",
       httpHeaders: {
         ...data.response.headers,
-        Status: data.response.status,
-        "x-puppeteer-resource-request-id": data.response.id,
+        status: data.response.status || -1,
+        "x-resource-request-id": data.response.id || "",
+        "x-remote-address-ip": data.response.remoteAddress?.ip || "",
+        "x-remote-address-port": data.response.remoteAddress?.port || "",
+        "x-timing-data": JSON.stringify(data.response.timing) || "",
       },
     },
     // Generator function to yield the response body
